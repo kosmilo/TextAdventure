@@ -344,9 +344,9 @@ namespace TextAdventure
                         break;
                     case "Close your eyes. ":
                         Writer.WriteTxt("You close your eyes. ", false); 
-                        Writer.WriteTxt("A sense of calmness washes over you. "); 
+                        Writer.WriteTxt("A sense of calmness washes over you, and you fall unconscious. "); 
 
-                        ChapterUtils.Death("You fall asleep. ");
+                        ChapterUtils.Death("You don't wake up again. ");
 
                         byTheRoad = false;
                         break;
