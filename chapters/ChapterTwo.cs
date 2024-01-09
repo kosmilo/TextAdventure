@@ -70,6 +70,7 @@ namespace TextAdventure
                         Writer.WriteTxt("The house is isn't much warmer than the air outside, but at least it'll protect you from the rain. ");
 
                         SoundManager.StopMusic();
+                        SoundManager.PlayEffect(1);
                         outside = false;
                         Hallway(save);
                         break;
@@ -220,7 +221,7 @@ namespace TextAdventure
                         Writer.WriteTxt("a cabinet, ", false);
                         Writer.WriteTxt("a desk ", false);
                         Writer.WriteTxt("and an unusually small dresser. ", false);
-                        Writer.WriteTxt("There's a few old children toys lying around the room too. ");
+                        Writer.WriteTxt("There's a few old children toys, mostly dolls, lying around the room too. ");
 
                         choices.Add("Go to the children's room. ");
                         choices.Remove("Try to open the second door. ");
@@ -231,6 +232,7 @@ namespace TextAdventure
                         break;
                     case "Go to the children's room. ":
                         meetElma = true;
+                        ChildrensRoom(save);
                         break;
                 }
             }
@@ -238,13 +240,49 @@ namespace TextAdventure
 
         private static void LivingArea(UserData save)
         {
-            List<string> choices;
-            int choice;
-
             Writer.WriteTxt("From what you can tell in the dim light, all the furniture in the living area is covered in a layer of dust, ", false);
             Writer.WriteTxt("and seems to date back at least a century, ", false);
             Writer.WriteTxt("yet most of it looks to be in a relatively good condition. ");
 
+            MeetElma(save);
+        }
+
+        private static void ChildrensRoom(UserData save)
+        {
+            Writer.WriteTxt("The small room is rather nice for a farmers child. ", false);
+            Writer.WriteTxt("The dolls have pretty dresses that must have been very colorful a long time ago. ", false);
+            Writer.WriteTxt("Now they're dusty and stained. ");
+
+            MeetElma(save);
+        }
+
+        private static void MeetElma(UserData save)
+        {
+            List<string> choices = new List<string> { };
+            int choice;
+
+            Thread.Sleep(1500);
+            Writer.WriteTxt(TextEdit.red + "Someone is watching you. ");
+
+            choices = new List<string> {
+                "Turn around. ",
+                "Stay still. ",
+                "Ask if someone is here. "
+            };
+
+            choice = InputReader.GetChoice(choices);
+
+            switch (choices[choice])
+            {
+                case "Turn around. ":
+                    break;
+                case "Ask if someone is here. ":
+                    break;
+                case "Stay still. ":
+                    break;
+            }
+
+            ChapterUtils.ChapterFinished(save);
         }
     }
 }
