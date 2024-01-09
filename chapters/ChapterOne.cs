@@ -5,6 +5,8 @@ namespace TextAdventure
         // Play chapter
         public static void Play(UserData save)
         {
+            SoundManager.LoadMusic(1);
+            SoundManager.PlayMusic();
             List<string> choices = new List<string> {};
             int choice;
 

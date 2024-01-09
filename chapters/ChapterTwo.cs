@@ -4,6 +4,8 @@ namespace TextAdventure
     {
         public static void Play(UserData save)
         {
+            SoundManager.LoadMusic(1);
+            SoundManager.PlayMusic();
             List<string> choices = new List<string> { };
             int choice;
 
@@ -32,7 +34,7 @@ namespace TextAdventure
             }
         }
 
-        public static void ToTheFarmHouse(UserData save)
+        private static void ToTheFarmHouse(UserData save)
         {
             List<string> choices = new List<string> { };
             int choice;
@@ -66,6 +68,8 @@ namespace TextAdventure
                     case "Try the door handle. ":
                         Writer.WriteTxt("Hand shaking you try the handle, and the door opens. ", false);
                         Writer.WriteTxt("The house is isn't much warmer than the air outside, but at least it'll protect you from the rain. ");
+
+                        SoundManager.StopMusic();
                         outside = false;
                         Hallway(save);
                         break;
@@ -86,7 +90,7 @@ namespace TextAdventure
                         Writer.WriteTxt("not very tall, ", false);
                         Writer.WriteTxt("moves through the entryway and disapears. ");
 
-                        ChapterUtils.TriggerEvent(save, "saw shadow in the window");
+                        ChapterUtils.TriggerEvent(save, "shadow in the window");
                         choices.Remove("Use your phone as a light and look again. ");
                         choices.Add("Keep looking. ");
                         break;
@@ -99,9 +103,9 @@ namespace TextAdventure
 
         }
 
-        public static void Hallway(UserData save)
+        private static void Hallway(UserData save)
         {
-            List<string> choices = new List<string> { };
+            List<string> choices;
             int choice;
 
             Writer.WriteTxt("You step into a dark, narrow hallway. ", false);
@@ -153,6 +157,7 @@ namespace TextAdventure
                         choices.Remove("Take the candles. ");
                         break;
                     case "Continue to the end of hallway. ":
+                        SoundManager.PlayEffect(0);
                         inHallway = false;
                         EndOfHallway(save);
                         break;
@@ -160,51 +165,86 @@ namespace TextAdventure
             }
         }
 
-        public static void EndOfHallway(UserData save)
+        private static void EndOfHallway(UserData save)
         {
             List<string> choices = new List<string> { };
             int choice;
 
             choices = new List<string> {
-                "Go to the living area. "
+                "Go to the living area. ",
+                "Try to open the first door. ",
+                "Try to open the second door. "
             };
-
-            Writer.WriteTxt("The old floorboards creak under you. ");
-
+            Writer.WriteTxt("The stairs have decayed in the passing of time, and they don't look like they'd support your weight anymore. ", false);
             Writer.WriteTxt("The entryway on your left leads to a larger room. ", false);
             Writer.WriteTxt("You can see a couch and two armchairs in front of a stone fireplace. ", false);
-            Writer.WriteTxt("There is another entryway that leads to a room with a dining table. ", false);
 
-            if (ChapterUtils.EventHappened(save, "saw shadow in the window"))
+            if (ChapterUtils.EventHappened(save, "shadow in the window"))
             {
-                Writer.WriteTxt("There is another entryway that leads to the room you saw from the window. ");
+                Writer.WriteTxt("There is another entryway that leads to the room you saw from the window. ", false);
                 choices.Add("Look around for the shadow. ");
             }
             else
             {
-                Writer.WriteTxt("There is another entryway that leads to a room with a dining table. ");
+                Writer.WriteTxt("There is another entryway that leads to a room with a dining table. ", false);
             }
+            Writer.WriteTxt("On your right are two pedestrian wooden doors.");
 
-            bool inCorridor = true;
+            bool meetElma = false;
 
-            while (inCorridor)
+            while (!meetElma)
             {
                 choice = InputReader.GetChoice(choices);
 
                 switch (choices[choice])
                 {
                     case "Go to the living area. ":
-                        Writer.WriteTxt("From what you can tell in the dim light, all the furniture in the living area is covered in a layer of dust, ", false);
-                        Writer.WriteTxt("and seems to date back at least a century. ", false);
-                        Writer.WriteTxt("Yet most of it looks to be in a relatively good condition. ");
-                        inCorridor = false;
+                        meetElma = true;
+                        LivingArea(save);
                         break;
                     case "Look around for the shadow. ":
-                        Writer.WriteTxt("You look around, but the shadow you saw through the window doesn't seem to be here. ", false);
+                        Writer.WriteTxt("You look around, but the shadow you saw through the window doesn't seem to be here. ");
                         choices.Remove("Look around for the shadow. ");
+                        break;
+                    case "Try to open the first door. ":
+                        SoundManager.PlayEffect(1);
+                        Writer.WriteTxt("The handle is stiff, but opens with a little bit of force. ");
+                        Writer.WriteTxt("In the room you see a queen-sized bed, with a cabinet and a dresser on the side. ");
+
+                        choices.Add("Go to the master bedroom. ");
+                        choices.Remove("Try to open the first door. ");
+                        break;
+                    case "Try to open the second door. ":
+                        SoundManager.PlayEffect(1);
+                        Writer.WriteTxt("You open the door to a small room with a bed, ", false);
+                        Writer.WriteTxt("a cabinet, ", false);
+                        Writer.WriteTxt("a desk ", false);
+                        Writer.WriteTxt("and an unusually small dresser. ", false);
+                        Writer.WriteTxt("There's a few old children toys lying around the room too. ");
+
+                        choices.Add("Go to the children's room. ");
+                        choices.Remove("Try to open the second door. ");
+                        break;
+                    case "Go to the master bedroom. ":
+                        if (choices.Contains("Look around for the shadow. ")) { choices.Remove("Look around for the shadow. "); }
+
+                        break;
+                    case "Go to the children's room. ":
+                        meetElma = true;
                         break;
                 }
             }
+        }
+
+        private static void LivingArea(UserData save)
+        {
+            List<string> choices;
+            int choice;
+
+            Writer.WriteTxt("From what you can tell in the dim light, all the furniture in the living area is covered in a layer of dust, ", false);
+            Writer.WriteTxt("and seems to date back at least a century, ", false);
+            Writer.WriteTxt("yet most of it looks to be in a relatively good condition. ");
+
         }
     }
 }

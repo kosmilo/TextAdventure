@@ -7,6 +7,7 @@ namespace TextAdventure
         static void Main()
         {
             Initializer.InitializeConsole();
+            SoundManager.InitializeSoundManager();
             Console.WriteLine("CVTS Enabled: " + Settings.cvtsEnabled);
             MainMenu.ShowMenu();
 

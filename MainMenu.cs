@@ -4,6 +4,9 @@ namespace TextAdventure
     {
         public static void ShowMenu()
         {
+            // Start music
+            SoundManager.PlayMusic();
+
             Thread.Sleep(400);
             Console.Clear();
             Console.WriteLine(@"
@@ -143,11 +146,13 @@ namespace TextAdventure
                 switch (choice)
                 {
                     case 0:
+                        SoundManager.StopMusic();
                         ChapterZero.Play();
                         break;
                     case 1:
                         UserData save = SaveHandler.GetSave();
                         if (save != null) {
+                            SoundManager.StopMusic();
                             ChapterUtils.PlayChapter(save);
                         }
                         break;
@@ -155,6 +160,7 @@ namespace TextAdventure
                         Credits.RollCredits();
                         break;
                     case 3:
+                        SoundManager.StopMusic();
                         Environment.Exit(0);
                         break;
                     default:

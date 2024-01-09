@@ -20,6 +20,10 @@ namespace TextAdventure
                     PlayChapter(save);
                     break;
             }
+
+            SoundManager.StopMusic();
+            SoundManager.LoadMusic(0);
+            SoundManager.PlayMusic();
         }
 
         public static void Death(string deathMsg)
@@ -40,6 +44,9 @@ namespace TextAdventure
                     PlayChapter(save);
                     break;
                 case 1:
+                    SoundManager.StopMusic();
+                    SoundManager.LoadMusic(0);
+                    SoundManager.PlayMusic();
                     break;
             }
         }
