@@ -228,6 +228,8 @@ namespace TextAdventure
                         break;
                     case "Go to the master bedroom. ":
                         if (choices.Contains("Look around for the shadow. ")) { choices.Remove("Look around for the shadow. "); }
+                        choices.Remove("Go to the master bedroom. ");
+                        MasterBedroom(save);
 
                         break;
                     case "Go to the children's room. ":
@@ -238,49 +240,47 @@ namespace TextAdventure
             }
         }
 
+        private static void MasterBedroom(UserData save)
+        {
+            int choice;
+            List<string> choices = new List<string>
+            {
+                "Get out of the room",
+                "Peak under the bed",
+                "Ignore it and keep looking around"
+            };
+
+            Writer.WriteTxt("As you go through the doorway you see something move in the corner. ", false);
+
+            // TODO: Write this room
+            
+            choice = InputReader.GetChoice(choices);
+        }
+
         private static void LivingArea(UserData save)
         {
+            ChapterUtils.TriggerEvent(save, "met elma in living area");
+
             Writer.WriteTxt("From what you can tell in the dim light, all the furniture in the living area is covered in a layer of dust, ", false);
             Writer.WriteTxt("and seems to date back at least a century, ", false);
             Writer.WriteTxt("yet most of it looks to be in a relatively good condition. ");
 
-            MeetElma(save);
+            Thread.Sleep(1500);
+            Writer.WriteTxt(TextEdit.red + "Someone is watching you. ");
+
+            ChapterUtils.ChapterFinished(save);
         }
 
         private static void ChildrensRoom(UserData save)
         {
+            ChapterUtils.TriggerEvent(save, "met Elma in her room");
+
             Writer.WriteTxt("The small room is rather nice for a farmers child. ", false);
             Writer.WriteTxt("The dolls have pretty dresses that must have been very colorful a long time ago. ", false);
             Writer.WriteTxt("Now they're dusty and stained. ");
 
-            MeetElma(save);
-        }
-
-        private static void MeetElma(UserData save)
-        {
-            List<string> choices = new List<string> { };
-            int choice;
-
             Thread.Sleep(1500);
             Writer.WriteTxt(TextEdit.red + "Someone is watching you. ");
-
-            choices = new List<string> {
-                "Turn around. ",
-                "Stay still. ",
-                "Ask if someone is here. "
-            };
-
-            choice = InputReader.GetChoice(choices);
-
-            switch (choices[choice])
-            {
-                case "Turn around. ":
-                    break;
-                case "Ask if someone is here. ":
-                    break;
-                case "Stay still. ":
-                    break;
-            }
 
             ChapterUtils.ChapterFinished(save);
         }

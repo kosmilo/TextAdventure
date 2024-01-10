@@ -8,6 +8,8 @@ namespace TextAdventure
             List<string> choices = new List<string> { "Continue to next chapter", "Return to main menu" };
             int choice;
 
+            Writer.TextBreak();
+
             Writer.WriteTxt(TextEdit.metaClr + $"Chapter {save.Chapter} finished", true);
             save.Chapter++;
             SaveHandler.SaveData(save);
@@ -63,6 +65,9 @@ namespace TextAdventure
                     break;
                 case 2:
                     ChapterTwo.Play(save);
+                    break;
+                case 3:
+                    ChapterThree.Play(save);
                     break;
                 default:
                     Credits.RollCredits();
